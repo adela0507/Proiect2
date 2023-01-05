@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -20,12 +21,28 @@ namespace Proiect2.Pages.Cosmetics
         }
 
         public IList<Beauty> Beauty { get;set; } = default!;
+        public BeautyData BeautyD { get; set; }
+        public int BeautyID { get; set; }
+        public int CategoryID { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int? id, int? categoryID)
         {
-            if (_context.Beauty != null)
+            BeautyD = new BeautyData();
+
+            BeautyD.Cosmetics = await _context.Beauty
+            .Include(b => b.Brand)
+            .Include(b => b.Expiration)
+            .Include(b => b.BeautyCategories)
+            .ThenInclude(b => b.Category)
+            .AsNoTracking()
+            .OrderBy(b => b.Name)
+            .ToListAsync();
+            if (id != null)
             {
-                Beauty = await _context.Beauty.Include(b=>b.Expiration).ToListAsync();
+                BeautyID = id.Value;
+                Beauty beauty = BeautyD.Cosmetics
+                .Where(i => i.ID == id.Value).Single();
+                BeautyD.Categories = beauty.BeautyCategories.Select(s => s.Category);
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Proiect2.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,11 +8,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Proiect2.Data;
-using Proiect2.Models;
+using System.Collections.Specialized;
 
 namespace Proiect2.Pages.Cosmetics
 {
-    public class EditModel : PageModel
+    public class EditModel : BeautyCategoriesPage
     {
         private readonly Proiect2.Data.Proiect2Context _context;
 
@@ -29,49 +30,54 @@ namespace Proiect2.Pages.Cosmetics
             {
                 return NotFound();
             }
-
-            var beauty =  await _context.Beauty.FirstOrDefaultAsync(m => m.ID == id);
-            if (beauty == null)
+            Beauty = await _context.Beauty
+            .Include(b => b.Expiration)
+            .Include(b => b.BeautyCategories).ThenInclude(b => b.Category)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(m => m.ID == id);
+            if (Beauty == null)
             {
                 return NotFound();
             }
-            Beauty = beauty;
+            PopulateAssignedCategoryData(_context, Beauty);
+            ViewData["BrandID"] = new SelectList(_context.Set<Brand>(), "ID", "Name");
+            ViewData["ExpirartionID"] = new SelectList(_context.Expiration, "ID",
+           "ExpirationProdcutName");
             return Page();
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id, string[] selectedCategories)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                return Page();
+                return NotFound();
             }
 
-            _context.Attach(Beauty).State = EntityState.Modified;
-
-            try
+            var beautyToUpdate = await _context.Beauty
+            .Include(i => i.Expiration)
+            .Include(i => i.BeautyCategories)
+            .ThenInclude(i => i.Category)
+            .FirstOrDefaultAsync(s => s.ID == id);
+            if (beautyToUpdate == null)
             {
+                return NotFound();
+            }
+            if (await TryUpdateModelAsync<Beauty>(
+            beautyToUpdate,
+            "Beauty",
+            i => i.Name, i => i.Brand,
+            i => i.Price, i => i.ExpirationDate, i => i.Expiration))
+            {
+                UpdateBeautyCategories(_context, selectedCategories, beautyToUpdate);
                 await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BeautyExists(Beauty.ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
+         UpdateBeautyCategories(_context, selectedCategories, beautyToUpdate);
+            PopulateAssignedCategoryData(_context, beautyToUpdate);
+            return Page();
         }
 
-        private bool BeautyExists(int id)
-        {
-          return _context.Beauty.Any(e => e.ID == id);
-        }
     }
 }

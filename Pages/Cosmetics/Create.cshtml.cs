@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,7 +11,7 @@ using Proiect2.Models;
 
 namespace Proiect2.Pages.Cosmetics
 {
-    public class CreateModel : PageModel
+    public class CreateModel : BeautyCategoriesPage
     {
         private readonly Proiect2.Data.Proiect2Context _context;
 
@@ -21,6 +22,13 @@ namespace Proiect2.Pages.Cosmetics
 
         public IActionResult OnGet()
         {
+            ViewData["BrandID"] = new SelectList( "ID",
+"Name");
+            ViewData["ExpirationID"] = new SelectList(_context.Set<Expiration>(), "ID",
+"ExpirationProductName");
+            var beauty = new Beauty();
+            beauty.BeautyCategories = new List<BeautyCategory>();
+            PopulateAssignedCategoryData(_context, beauty);
             return Page();
         }
 
@@ -29,17 +37,27 @@ namespace Proiect2.Pages.Cosmetics
         
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string[] selectedCategories)
         {
-          if (!ModelState.IsValid)
+            var newBeauty = Beauty;
+            if (selectedCategories != null)
             {
-                return Page();
+                newBeauty.BeautyCategories = new List<BeautyCategory>();
+                foreach (var cat in selectedCategories)
+                {
+                    var catToAdd = new BeautyCategory
+                    {
+                        CategoryID = int.Parse(cat)
+                    };
+                    newBeauty.BeautyCategories.Add(catToAdd);
+                }
             }
-
-            _context.Beauty.Add(Beauty);
+            
+            _context.Beauty.Add(newBeauty);
             await _context.SaveChangesAsync();
-
             return RedirectToPage("./Index");
+            PopulateAssignedCategoryData(_context, newBeauty);
+            return Page();
         }
     }
 }

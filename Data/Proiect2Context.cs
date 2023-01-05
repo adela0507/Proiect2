@@ -19,5 +19,7 @@ namespace Proiect2.Data
         public DbSet<Proiect2.Models.Expiration> Expiration { get; set; }
 
         public DbSet<Proiect2.Models.Brand> Brand { get; set; }
+
+        public DbSet<Proiect2.Models.Category> Category { get; set; }
     }
 }

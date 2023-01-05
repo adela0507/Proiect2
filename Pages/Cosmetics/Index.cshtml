@@ -26,14 +26,22 @@
                 @Html.DisplayNameFor(model => model.Beauty[0].Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Beauty[0].Expiration.ExpirationProductName)
+                @Html.DisplayNameFor(model => model.Beauty[0].ExpirationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Beauty[0].BeautyCategories)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Beauty) {
-        <tr>
+@foreach (var item in Model.BeautyD.Cosmetics) {string selectedRow = "";
+ if (item.ID == Model.BeautyID)
+ {
+ selectedRow = "table-success";
+ }
+ <tr class="@selectedRow">
+        
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -47,7 +55,15 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Expiration.ExpirationProductName)
+                    @Html.DisplayFor(modelItem => item.ExpirationDate)
+                </td>
+                <td>
+                    @{
+                        foreach (var category in item.BeautyCategories)
+                        {
+                            @category.Category.ID @: @category.Category.CategoryName <br />
+                        }
+                    }
                 </td>
 
             <td>

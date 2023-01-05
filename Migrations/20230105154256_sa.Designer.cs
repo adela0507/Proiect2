@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Proiect2.Data;
 
@@ -11,9 +12,10 @@ using Proiect2.Data;
 namespace Proiect2.Migrations
 {
     [DbContext(typeof(Proiect2Context))]
-    partial class Proiect2ContextModelSnapshot : ModelSnapshot
+    [Migration("20230105154256_sa")]
+    partial class sa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
