@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Security.Policy;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,6 +13,8 @@ using Proiect2.Models;
 
 namespace Proiect2.Pages.Cosmetics
 {
+    [Authorize(Roles = "Admin")]
+
     public class CreateModel : BeautyCategoriesPage
     {
         private readonly Proiect2.Data.Proiect2Context _context;
