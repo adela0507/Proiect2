@@ -21,7 +21,7 @@ namespace Proiect2.Models
         public int? ExpirationID { get; set; }
         public Expiration? Expiration { get; set; }
         public int? BrandID { get; set; }
-        public Brand? Brand { get; set; }
+        public Brand? BeautyCategory { get; set; }
         public ICollection<BeautyCategory>? BeautyCategories { get; set; }
     }
 }

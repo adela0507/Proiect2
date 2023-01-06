@@ -67,7 +67,7 @@ namespace Proiect2.Pages.Cosmetics
             if (await TryUpdateModelAsync<Beauty>(
             beautyToUpdate,
             "Beauty",
-            i => i.Name, i => i.Brand,
+            i => i.Name, i => i.BeautyCategory,
             i => i.Price, i => i.ExpirationDate, i => i.Expiration))
             {
                 UpdateBeautyCategories(_context, selectedCategories, beautyToUpdate);
