@@ -27,6 +27,7 @@ namespace Proiect2.Pages.Testings
             {
                 Testing = await _context.Testing
                 .Include(t => t.Beauty)
+                .ThenInclude(b=>b.BeautyCategories)
                 .Include(t => t.Tester).ToListAsync();
             }
         }

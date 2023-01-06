@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Proiect2.Data;
 using Proiect2.Models;
 
@@ -21,8 +22,15 @@ namespace Proiect2.Pages.Testings
 
         public IActionResult OnGet()
         {
-        ViewData["BeautyID"] = new SelectList(_context.Beauty, "ID", "ID");
-        ViewData["TesterID"] = new SelectList(_context.Tester, "ID", "ID");
+            var beautyList = _context.Beauty
+               .Include(b => b.BeautyCategories)
+               .Select(x => new
+               {
+                   x.ID,
+                   BeautyFullName = x.Name + " - " + x.BeautyCategories
+               });
+            ViewData["BeautyID"] = new SelectList(beautyList, "ID", "ID");
+        ViewData["TesterID"] = new SelectList(_context.Tester, "ID", "FullName");
             return Page();
         }
 
