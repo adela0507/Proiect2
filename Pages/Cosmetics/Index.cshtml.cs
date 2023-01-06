@@ -33,7 +33,7 @@ searchString)
             BeautyD = new BeautyData();
             CurrentFilter = searchString;
             BeautyD.Cosmetics = await _context.Beauty
-            .Include(b => b.BeautyCategory)
+            .Include(b => b.BeautyCategories)
             .Include(b => b.Expiration)
             .Include(b => b.BeautyCategories)
             .ThenInclude(b => b.Category)

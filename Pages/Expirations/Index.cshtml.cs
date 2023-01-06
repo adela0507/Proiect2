@@ -31,7 +31,7 @@ namespace Proiect2.Pages.Expirations
             ExpirationData = new ExpirationIndexData();
             ExpirationData.Expirations = await _context.Expiration
                    .Include(i => i.Cosmetics)
-                   .ThenInclude(c => c.BeautyCategory)
+                   .ThenInclude(c => c.BeautyCategories)
                    .OrderBy(i => i.ExpirationProductName)
                    .ToListAsync();
             if (id != null)

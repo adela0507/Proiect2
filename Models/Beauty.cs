@@ -9,7 +9,10 @@ namespace Proiect2.Models
     public class Beauty
     {
         public int ID { get; set; }
+        //public string Brands { get; set; }
+
         [Display(Name = "Beauty Name")]
+
         public string Name { get; set; }
         public string Description { get; set; }
 
@@ -21,7 +24,7 @@ namespace Proiect2.Models
         public int? ExpirationID { get; set; }
         public Expiration? Expiration { get; set; }
         public int? BrandID { get; set; }
-        public Brand? BeautyCategory { get; set; }
+        public Brand? Brand { get; set; }
         public ICollection<BeautyCategory>? BeautyCategories { get; set; }
     }
 }
