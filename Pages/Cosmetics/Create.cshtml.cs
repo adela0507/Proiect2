@@ -26,8 +26,8 @@ namespace Proiect2.Pages.Cosmetics
 
         public IActionResult OnGet()
         {
-            ViewData["BrandID"] = new SelectList( "ID",
-"Name");
+            ViewData["BrandID"] = new SelectList(_context.Set<Brand>(), "ID",
+"BrandName");
             ViewData["ExpirationID"] = new SelectList(_context.Set<Expiration>(), "ID",
 "ExpirationProductName");
             var beauty = new Beauty();

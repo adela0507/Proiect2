@@ -40,7 +40,8 @@ namespace Proiect2.Pages.Cosmetics
                 return NotFound();
             }
             PopulateAssignedCategoryData(_context, Beauty);
-            ViewData["BrandID"] = new SelectList(_context.Set<Brand>(), "ID", "Name");
+            ViewData["BrandID"] = new SelectList(_context.Set<Brand>(), "ID",
+            "BrandName");
             ViewData["ExpirartionID"] = new SelectList(_context.Expiration, "ID",
            "ExpirationProdcutName");
             return Page();
