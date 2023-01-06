@@ -1,0 +1,49 @@
+﻿@page
+@model Proiect2.Pages.Testings.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Testing[0].Tester)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Testing[0].Beauty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Testing[0].TestingDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Testing) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tester.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Beauty.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TestingDate)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

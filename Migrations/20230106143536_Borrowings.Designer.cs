@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Proiect2.Data;
 
@@ -11,9 +12,10 @@ using Proiect2.Data;
 namespace Proiect2.Migrations
 {
     [DbContext(typeof(Proiect2Context))]
-    partial class Proiect2ContextModelSnapshot : ModelSnapshot
+    [Migration("20230106143536_Borrowings")]
+    partial class Borrowings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,61 +134,6 @@ namespace Proiect2.Migrations
                     b.ToTable("Expiration");
                 });
 
-            modelBuilder.Entity("Proiect2.Models.Tester", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<string>("Adress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Tester");
-                });
-
-            modelBuilder.Entity("Proiect2.Models.Testing", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<int?>("BeautyID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TesterID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("TestingDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("BeautyID");
-
-                    b.HasIndex("TesterID");
-
-                    b.ToTable("Testing");
-                });
-
             modelBuilder.Entity("Proiect2.Models.Beauty", b =>
                 {
                     b.HasOne("Proiect2.Models.Brand", "Brand")
@@ -221,21 +168,6 @@ namespace Proiect2.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Proiect2.Models.Testing", b =>
-                {
-                    b.HasOne("Proiect2.Models.Beauty", "Beauty")
-                        .WithMany()
-                        .HasForeignKey("BeautyID");
-
-                    b.HasOne("Proiect2.Models.Tester", "Tester")
-                        .WithMany("Testings")
-                        .HasForeignKey("TesterID");
-
-                    b.Navigation("Beauty");
-
-                    b.Navigation("Tester");
-                });
-
             modelBuilder.Entity("Proiect2.Models.Beauty", b =>
                 {
                     b.Navigation("BeautyCategories");
@@ -244,11 +176,6 @@ namespace Proiect2.Migrations
             modelBuilder.Entity("Proiect2.Models.Expiration", b =>
                 {
                     b.Navigation("Cosmetics");
-                });
-
-            modelBuilder.Entity("Proiect2.Models.Tester", b =>
-                {
-                    b.Navigation("Testings");
                 });
 #pragma warning restore 612, 618
         }

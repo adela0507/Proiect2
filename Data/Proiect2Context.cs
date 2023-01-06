@@ -21,5 +21,9 @@ namespace Proiect2.Data
         public DbSet<Proiect2.Models.Brand> Brand { get; set; }
 
         public DbSet<Proiect2.Models.Category> Category { get; set; }
+
+        public DbSet<Proiect2.Models.Tester> Tester { get; set; }
+
+        public DbSet<Proiect2.Models.Testing> Testing { get; set; }
     }
 }
